@@ -1,5 +1,5 @@
 import fs from 'fs';
-import { spawn } from 'child_process';
+import { exec } from 'child_process';
 
 fs.appendFile('filename.txt', ' Appending some data.', (err) => {
     if (err) throw err;
@@ -7,26 +7,39 @@ fs.appendFile('filename.txt', ' Appending some data.', (err) => {
 });
 
 
-const runCommand = (command, args = []) => {
+function runCommand(command, workingDir) {
     return new Promise((resolve, reject) => {
-        const process = spawn(command, args, { stdio: 'inherit' });
-
-        process.on('close', (code) => {
-            if (code !== 0) {
-                reject(`Process exited with code ${code}`);
-            } else {
-                resolve();
-            }
-        });
+      exec(command, { cwd: workingDir }, (error, stdout, stderr) => {
+        if (error) {
+          console.error(`Error: ${error.message}`);
+          return reject(error);
+        }
+        if (stderr) {
+          console.error(`Stderr: ${stderr}`);
+          return reject(stderr);
+        }
+        console.log(`Output: ${stdout}`);
+        resolve(stdout);
+      });
     });
-};
+  }
 
 (async () => {
     try {
-        await runCommand('bash', ['bin/bash.sh']);
-    } catch (error) {
-        console.error(`Execution failed: ${error}`);
-    } finally {
+        console.log("Starting Git auto-commit process...");
+    
+        await runCommand("git add .");
+        console.log("Staged changes.");
+    
+        const commitMessage = `Auto-commit: ${new Date().toISOString()}`;
+        await runCommand(`git commit -m "${commitMessage}"`);
+        console.log("Committed changes.");
+    
+        await runCommand("git push -u origin main");
+        console.log("Pushed changes to the repository.");
+      } catch (error) {
+        console.error("Failed to complete auto-commit:", error);
+      } finally {
         console.log('All commands executed.');
     }
 })();
