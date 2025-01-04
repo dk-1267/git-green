@@ -1,17 +1,5 @@
 #!/bin/bash
 
-# Simulate a long-running process
-long_running_task() {
-
-    echo "Hello, Now Start Executing File"
-    echo
-
-    cd "C:/Users/karishma/OneDrive/Desktop/git-green/bin"
-    echo "Current Directory: $(pwd)"
-
-    node app.js
-}
-
 # Function to display the loading animation
 loading_animation() {
     local pid=$1  # PID of the background process
@@ -25,6 +13,17 @@ loading_animation() {
         done
     done
     printf "\r[✔] Done!       \n"
+}
+
+# Long-running task: Navigating and executing the Node.js script
+long_running_task() {
+    echo "Hello, Now Start Executing File"
+    echo
+
+    cd "C:/Users/karishma/OneDrive/Desktop/git-green/bin" || exit
+    echo "Current Directory: $(pwd)"
+
+    node app.js
 }
 
 # Start the long-running process in the background
