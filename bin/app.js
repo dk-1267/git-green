@@ -27,7 +27,7 @@ function runCommand(command) {
 (async () => {
     try {
         console.log("Starting Git auto-commit process...");
-    
+
         await runCommand("git add .");
         console.log("Staged changes.");
     
@@ -37,6 +37,7 @@ function runCommand(command) {
     
         await runCommand("git push -u origin main");
         console.log("Pushed changes to the repository.");
+        
       } catch (error) {
         console.error("Failed to complete auto-commit:", error);
       } finally {

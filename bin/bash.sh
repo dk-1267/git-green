@@ -6,25 +6,10 @@ long_running_task() {
     echo "Hello, Now Start Executing File"
     echo
 
-    command_exists() {
-    command -v "$1" &> /dev/null
-    }
+    cd "C:/Users/karishma/OneDrive/Desktop/git-green/bin"
+    echo "Current Directory: $(pwd)"
 
-    # Authenticate if not already done
-    if ! gh auth status &> /dev/null; then
-        echo "Authenticating GitHub CLI..."
-        gh auth login || { echo "Authentication failed."; exit 1; }
-    fi
-    echo
-    
-    # Initialize with README
-    echo "Initializing repository with README..."
-    git add .
-    git commit -m "Initial commit"
-    git push -u origin main || { echo "Failed to push changes. Exiting."; exit 1; }
-
-    echo "Private repository commited and initialized successfully!"
-
+    node app.js
 }
 
 # Function to display the loading animation
