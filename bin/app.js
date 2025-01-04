@@ -7,9 +7,9 @@ fs.appendFile('filename.txt', ' Appending some data.', (err) => {
 });
 
 
-function runCommand(command, workingDir) {
+function runCommand(command) {
     return new Promise((resolve, reject) => {
-      exec(command, { cwd: workingDir }, (error, stdout, stderr) => {
+      exec(command, (error, stdout, stderr) => {
         if (error) {
           console.error(`Error: ${error.message}`);
           return reject(error);
